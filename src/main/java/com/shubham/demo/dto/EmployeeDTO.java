@@ -2,16 +2,25 @@ package com.shubham.demo.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.shubham.demo.model.Employee;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 /**
  * This class is use to receive and sending request to the client. It will not interact with DB.
 **/
 public class EmployeeDTO {
 
+
     private Integer id;
+
+    @NotBlank(message = "Name cannot be blank")
+    @Size(max = 50, message = "Name cannot exceed 50 characters")
     private String name;
+
+    @NotBlank(message = "Address cannot be blank")
     private String address;
+
+    @NotBlank(message = "Role cannot be blank")
     private String role;
 
     /**
@@ -28,7 +37,6 @@ public class EmployeeDTO {
    // }
 
     /**
-     *
      * @param name
      * @param address
      * @param role

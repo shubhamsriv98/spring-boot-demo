@@ -3,6 +3,7 @@ package com.shubham.demo.controller;
 import com.shubham.demo.dto.ApiResponseDTO;
 import com.shubham.demo.dto.EmployeeDTO;
 import com.shubham.demo.service.IEmployeeService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/saveEmployee")
-    public ResponseEntity<EmployeeDTO> saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<EmployeeDTO> saveEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
         LOGGER.debug("Employee data before persist: {}", employeeDTO);
         EmployeeDTO savedEmployee =  employeeService.saveEmployee(employeeDTO);
         LOGGER.debug("Employee data after persist: {}", savedEmployee);
@@ -46,7 +47,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/updateEmployee")
-    public ResponseEntity<EmployeeDTO> updatePerson(@RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<EmployeeDTO> updatePerson(@Valid @RequestBody EmployeeDTO employeeDTO) {
         LOGGER.debug("Employee data before update: {}", employeeDTO);
         EmployeeDTO updatedEmployeeDTO = employeeService.updateEmployee(employeeDTO);
         LOGGER.debug("Employee data after update: {}", employeeDTO);
@@ -55,13 +56,12 @@ public class EmployeeController {
     }
 
     @PatchMapping("/update/{id}")
-    public ResponseEntity<EmployeeDTO> updateById(@PathVariable Integer id, @RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<EmployeeDTO> updateById(@PathVariable Integer id, @Valid @RequestBody EmployeeDTO employeeDTO) {
         LOGGER.debug("Employee id: {} and Employee Data: {}",id, employeeDTO);
         EmployeeDTO updatedEmployeeDTO = employeeService.updateEmployeeById(id, employeeDTO);
         LOGGER.debug("Employee data after partial update: {}", employeeDTO);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(updatedEmployeeDTO);
-
     }
 
 
