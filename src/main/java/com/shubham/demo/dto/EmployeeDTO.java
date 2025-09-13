@@ -1,7 +1,12 @@
 package com.shubham.demo.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shubham.demo.model.Employee;
 
+/**
+ * This class is use to receive and sending request to the client. It will not interact with DB.
+**/
 public class EmployeeDTO {
 
     private Integer id;
@@ -9,15 +14,34 @@ public class EmployeeDTO {
     private String address;
     private String role;
 
-    public EmployeeDTO(Employee employee) {
-        this.id = employee.getId();
-        this.name = employee.getName();
-        this.address = employee.getAddress();
-        this.role = employee.getRole();
-    }
+    /**
+     * I have commented below code because i'm using advance feature of spring which is below in parametrized constructor.
+     */
+    //public EmployeeDTO() {
+        /*
+         * specially this approach is used in case of option fields.
+         * Needed by Jackson.
+         * fields are non-final and have default package-private access, Jackson can directly access fields via reflection.
+         * So even without setters, no-arg constructor, reflection allows Jackson to populate the fields,
+         * specially in the case of post mapping, where data need to mapped from Json Object to Java Object.
+         */
+   // }
 
-    public Integer getId() {
-        return id;
+    /**
+     *
+     * @param name
+     * @param address
+     * @param role
+     * Advanced, Jackson builds object directly from JSON.
+     * Enforces object validity → All required fields must be provided during creation.
+     * If JSON has missing fields, object creation fails immediately.
+     */
+    @JsonCreator
+    public EmployeeDTO(@JsonProperty String name, @JsonProperty String address, @JsonProperty String role, @JsonProperty Integer id) {
+        this.name = name;
+        this.address = address;
+        this.role = role;
+        this.id = id;
     }
 
     public String getRole() {
@@ -30,5 +54,9 @@ public class EmployeeDTO {
 
     public String getName() {
         return name;
+    }
+
+    public Integer getId() {
+        return id;
     }
 }

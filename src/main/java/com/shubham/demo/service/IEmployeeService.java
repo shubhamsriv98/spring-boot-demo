@@ -1,12 +1,16 @@
 package com.shubham.demo.service;
 
-import com.shubham.demo.model.Employee;
+import com.shubham.demo.dto.EmployeeDTO;
 
 public interface IEmployeeService {
 
-    Employee saveEmployee(Employee employee);
+    EmployeeDTO saveEmployee(EmployeeDTO employeeDTO);
 
     void deleteEmployeeById(Integer id);
 
-    Employee getEmployeeById(Integer id);
+    EmployeeDTO getEmployeeById(Integer id);
+
+    EmployeeDTO updateEmployee(EmployeeDTO employeeDTO);
+
+    EmployeeDTO updateEmployeeById(Integer id, EmployeeDTO employeeDTO);
 }

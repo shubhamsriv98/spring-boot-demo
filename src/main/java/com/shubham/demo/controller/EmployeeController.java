@@ -2,7 +2,6 @@ package com.shubham.demo.controller;
 
 import com.shubham.demo.dto.ApiResponseDTO;
 import com.shubham.demo.dto.EmployeeDTO;
-import com.shubham.demo.model.Employee;
 import com.shubham.demo.service.IEmployeeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,17 +23,17 @@ public class EmployeeController {
     @GetMapping("/getEmployee/{id}")
     public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Integer id) {
         LOGGER.debug("Employee id: {}", id);
-        Employee employee = employeeService.getEmployeeById(id);
-        return ResponseEntity.ok(new EmployeeDTO(employee));
+        EmployeeDTO employeeDTO = employeeService.getEmployeeById(id);
+        return ResponseEntity.ok(employeeDTO);
     }
 
     @PostMapping("/saveEmployee")
-    public ResponseEntity<EmployeeDTO> saveEmployee(@RequestBody Employee employee) {
-        LOGGER.debug("Employee data before update: {}", employee);
-        Employee savedEmployee =  employeeService.saveEmployee(employee);
-        LOGGER.debug("Employee data after update: {}", savedEmployee);
+    public ResponseEntity<EmployeeDTO> saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        LOGGER.debug("Employee data before persist: {}", employeeDTO);
+        EmployeeDTO savedEmployee =  employeeService.saveEmployee(employeeDTO);
+        LOGGER.debug("Employee data after persist: {}", savedEmployee);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new EmployeeDTO(savedEmployee));
+                .body(employeeDTO);
     }
 
 
@@ -43,6 +42,25 @@ public class EmployeeController {
         employeeService.deleteEmployeeById(id);
         LOGGER.debug("Employee data deleted");
         return ResponseEntity.ok(new ApiResponseDTO("success", "Employee with id: " + id + " has been deleted"));
+
+    }
+
+    @PutMapping("/updateEmployee")
+    public ResponseEntity<EmployeeDTO> updatePerson(@RequestBody EmployeeDTO employeeDTO) {
+        LOGGER.debug("Employee data before update: {}", employeeDTO);
+        EmployeeDTO updatedEmployeeDTO = employeeService.updateEmployee(employeeDTO);
+        LOGGER.debug("Employee data after update: {}", employeeDTO);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(updatedEmployeeDTO);
+    }
+
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<EmployeeDTO> updateById(@PathVariable Integer id, @RequestBody EmployeeDTO employeeDTO) {
+        LOGGER.debug("Employee id: {} and Employee Data: {}",id, employeeDTO);
+        EmployeeDTO updatedEmployeeDTO = employeeService.updateEmployeeById(id, employeeDTO);
+        LOGGER.debug("Employee data after partial update: {}", employeeDTO);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(updatedEmployeeDTO);
 
     }
 
